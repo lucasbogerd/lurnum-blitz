@@ -1,6 +1,6 @@
 import Layout from "app/core/layouts/Layout"
 import { BlitzPage } from "blitz"
-import { CreateLabelForm } from "../components/CreateLabelForm"
+import { CreateLabelForm } from "../../components/CreateLabelForm"
 
 const AddLabelPage: BlitzPage = () => {
   return (
