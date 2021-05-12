@@ -3,5 +3,5 @@
   "editor.codeActionsOnSave": {
     "source.fixAll.eslint": true
   },
-  "jira-plugin.workingProject": ""
+  "conventionalCommits.scopes": ["db", "crud", "app", "ide"]
 }
