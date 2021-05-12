@@ -1,4 +1,4 @@
-import { useMutation } from "@blitzjs/core"
+import { useMutation } from "blitz"
 import { Form, FORM_ERROR } from "app/core/components/Form"
 import { LabeledTextField } from "app/core/components/LabeledTextField"
 

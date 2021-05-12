@@ -1,6 +1,6 @@
 import Layout from "app/core/layouts/Layout"
 import { BlitzPage, useRouter } from "blitz"
-import { CreateLabelForm } from "../../components/CreateLabelForm"
+import { CreateLabelForm } from "app/labels/components/CreateLabelForm"
 
 const AddLabelPage: BlitzPage = () => {
   const router = useRouter()
