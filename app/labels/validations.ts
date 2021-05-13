@@ -7,3 +7,16 @@ export const CreateLabel = z
     text,
   })
   .nonstrict()
+
+export const DeleteLabel = z
+  .object({
+    id: z.number(),
+  })
+  .nonstrict()
+
+export const UpdateLabel = z
+  .object({
+    id: z.number(),
+    text: z.string(),
+  })
+  .nonstrict()

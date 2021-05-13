@@ -1,13 +1,6 @@
 import { resolver } from "blitz"
 import db from "db"
-import * as z from "zod"
-
-const UpdateLabel = z
-  .object({
-    id: z.number(),
-    text: z.string(),
-  })
-  .nonstrict()
+import { UpdateLabel } from "../validations"
 
 export default resolver.pipe(
   resolver.zod(UpdateLabel),

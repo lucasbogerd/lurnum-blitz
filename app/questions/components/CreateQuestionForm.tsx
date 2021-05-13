@@ -1,10 +1,14 @@
 import { Form, FORM_ERROR } from "app/core/components/Form"
+import { LabeledCheckboxField } from "app/core/components/LabeledCheckboxField"
 import LabeledTextField from "app/core/components/LabeledTextField"
 import { useMutation } from "blitz"
+import { Label } from "db"
 import createQuestion from "../mutations/createQuestion"
 import { CreateQuestion } from "../validations"
+
 type CreateQuestionFormProps = {
   onSuccess?: () => void
+  labels: Label[]
 }
 
 export const CreateQuestionForm = (props: CreateQuestionFormProps) => {
@@ -28,6 +32,9 @@ export const CreateQuestionForm = (props: CreateQuestionFormProps) => {
         }}
       >
         <LabeledTextField name="text" label="Question text" placeholder="Question text" />
+        {props.labels.map((label) => {
+          return <LabeledCheckboxField value={label.id} name={label.text} label={label.text} />
+        })}
       </Form>
     </>
   )
