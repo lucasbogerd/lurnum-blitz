@@ -1,16 +1,9 @@
 import Layout from "app/core/layouts/Layout"
-import getLabels from "app/labels/queries/getLabels"
 import { CreateQuestionForm } from "app/questions/components/CreateQuestionForm"
-import { BlitzPage, usePaginatedQuery, useRouter } from "blitz"
+import { BlitzPage, useRouter } from "blitz"
 
 const AddQuestionPage: BlitzPage = () => {
   const router = useRouter()
-  const [{ labels }] = usePaginatedQuery(getLabels, {
-    orderBy: { text: "desc" },
-    take: 10,
-  })
-
-  const now: Date = new Date()
 
   return (
     <>
@@ -21,12 +14,17 @@ const AddQuestionPage: BlitzPage = () => {
         labels={[
           {
             id: 1,
-            createdAt: now,
-            updatedAt: now,
-            text: "asdf",
+            text: "karel",
+            createdAt: new Date(),
+            updatedAt: new Date(),
+          },
+          {
+            id: 2,
+            text: "asdfasdf",
+            createdAt: new Date(),
+            updatedAt: new Date(),
           },
         ]}
-        // labels={labels}
       />
     </>
   )

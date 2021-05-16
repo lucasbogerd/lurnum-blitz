@@ -31,9 +31,17 @@ export const CreateQuestionForm = (props: CreateQuestionFormProps) => {
           }
         }}
       >
-        <LabeledTextField name="text" label="Question text" placeholder="Question text" />
+        <LabeledTextField id="0" name="text" label="Question text" placeholder="Question text" />
         {props.labels.map((label) => {
-          return <LabeledCheckboxField value={label.id} name={label.text} label={label.text} />
+          return (
+            <LabeledCheckboxField
+              value={label.id}
+              name={label.text}
+              label={label.text}
+              key={label.id.toString()}
+              type="checkbox"
+            />
+          )
         })}
       </Form>
     </>

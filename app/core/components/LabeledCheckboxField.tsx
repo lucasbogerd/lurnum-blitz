@@ -14,12 +14,12 @@ export const LabeledCheckboxField = forwardRef<HTMLInputElement, LabeledCheckbox
     const {
       input,
       meta: { touched, error, submitError, submitting },
-    } = useField(name)
+    } = useField(name, { type: "checkbox" })
 
     const normalizedError = Array.isArray(error) ? error.join(", ") : error || submitError
 
     return (
-      <div {...outerProps}>
+      <div {...outerProps} key={props.id}>
         <label>
           {label}
           <input {...input} type="checkbox" disabled={submitting} {...props} ref={ref} />
