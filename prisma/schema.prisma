@@ -30,7 +30,7 @@ model Type {
 model NameRequest {
   id            Int      @id @default(autoincrement())
   requestedName String   @db.VarChar(255)
-  comment       String   @db.Text
+  comment       String?  @db.Text
   createdOn     DateTime @default(now()) @db.Timestamptz(6)
   isGranted     Boolean
   grantedOn     DateTime @default(now()) @db.Timestamptz(6)
