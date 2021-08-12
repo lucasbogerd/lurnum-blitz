@@ -9,3 +9,61 @@ datasource db {
 generator client {
   provider = "prisma-client-js"
 }
+
+model Pokemon {
+  id        Int    @id @default(autoincrement())
+  pokedexId Int
+  name      String @db.VarBit(255)
+
+  types               PokemonTypes[]
+  pokemonNameRequests PokemonNameRequests[]
+  caughtPokemons      CaughtPokemon[]
+}
+
+model Type {
+  id   Int    @id @default(autoincrement())
+  name String @db.VarChar(255)
+
+  pokemons PokemonTypes[]
+}
+
+model NameRequest {
+  id            Int      @id @default(autoincrement())
+  requestedName String   @db.VarChar(255)
+  comment       String   @db.Text
+  createdOn     DateTime @default(now()) @db.Timestamptz(6)
+  isGranted     Boolean
+  grantedOn     DateTime @default(now()) @db.Timestamptz(6)
+
+  pokemonNameRequests PokemonNameRequests[]
+}
+
+model CaughtPokemon {
+  id       Int        @id @default(autoincrement())
+  caughtOn DateTime   @default(now()) @db.Timestamptz(6)
+  isDead   Boolean
+  diedOn   DateTime[]
+
+  pokemon   Pokemon @relation(fields: [pokemonId], references: [id])
+  pokemonId Int
+}
+
+model PokemonTypes {
+  pokemon   Pokemon @relation(fields: [pokemonId], references: [id])
+  pokemonId Int
+
+  type   Type @relation(fields: [typeId], references: [id])
+  typeId Int
+
+  @@id([pokemonId, typeId])
+}
+
+model PokemonNameRequests {
+  pokemon   Pokemon @relation(fields: [pokemonId], references: [id])
+  pokemonId Int
+
+  nameRequest   NameRequest @relation(fields: [nameRequestId], references: [id])
+  nameRequestId Int
+
+  @@id([pokemonId, nameRequestId])
+}
