@@ -11,20 +11,27 @@ generator client {
 }
 
 model Pokemon {
-  id        Int    @id @default(autoincrement())
-  pokedexId Int
-  name      String @db.VarBit(255)
+  id          Int     @id @default(autoincrement())
+  pokedexId   Int     @unique
+  name        String  @db.VarChar(255)
+  generation  Int
+  isLegendary Boolean
 
-  types               PokemonTypes[]
+  type1     Type   @relation("PokemonFirstType", fields: [type1Name], references: [name])
+  type1Name String @db.VarChar(16)
+
+  type2     Type?   @relation("PokemonSecondType", fields: [type2Name], references: [name])
+  type2Name String? @db.VarChar(16)
+
   pokemonNameRequests PokemonNameRequests[]
   caughtPokemons      CaughtPokemon[]
 }
 
 model Type {
-  id   Int    @id @default(autoincrement())
-  name String @db.VarChar(255)
+  name String @id @db.VarChar(16)
 
-  pokemons PokemonTypes[]
+  pokemonByFirstType  Pokemon[] @relation("PokemonFirstType")
+  pokemonBySecondType Pokemon[] @relation("PokemonSecondType")
 }
 
 model NameRequest {
@@ -46,16 +53,6 @@ model CaughtPokemon {
 
   pokemon   Pokemon @relation(fields: [pokemonId], references: [id])
   pokemonId Int
-}
-
-model PokemonTypes {
-  pokemon   Pokemon @relation(fields: [pokemonId], references: [id])
-  pokemonId Int
-
-  type   Type @relation(fields: [typeId], references: [id])
-  typeId Int
-
-  @@id([pokemonId, typeId])
 }
 
 model PokemonNameRequests {
