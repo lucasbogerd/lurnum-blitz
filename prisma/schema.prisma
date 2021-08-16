@@ -11,65 +11,89 @@ generator client {
 }
 
 model Pokemon {
-  id                      Int    @id @default(autoincrement())
-  pokedexId               Int    @unique
-  name                    String @db.VarChar(255)
-  generation              Int
-  legendaryClassification String @db.VarChar(32)
-
-  type1     Type   @relation("PokemonFirstType", fields: [type1Name], references: [name])
-  type1Name String @db.VarChar(16)
-
-  type2     Type?   @relation("PokemonSecondType", fields: [type2Name], references: [name])
-  type2Name String? @db.VarChar(16)
-
-  experienceGroups   ExperienceGroups @relation(fields: [experienceGroupsId], references: [id])
-  experienceGroupsId Int
-
-  pokemonNameRequests PokemonNameRequests[]
-  caughtPokemons      CaughtPokemon[]
+  // Empty comments are used to improve formatting whilst retaining sensible whitespace
+  id                      Int                   @id @default(autoincrement())
+  pokedexId               Int                   @unique
+  name                    String                @db.VarChar(255)
+  legendaryClassification String                @db.VarChar(32)
+  //
+  predecessor             Pokemon?              @relation("PokemonPredecessor", fields: [predecessorPokemonId], references: [id])
+  predecessorPokemon      Pokemon?              @relation("PokemonPredecessor")
+  predecessorPokemonId    Int?
+  //
+  type1                   Type                  @relation("PokemonFirstType", fields: [type1Name], references: [name])
+  type1Name               String                @db.VarChar(16)
+  //
+  type2                   Type?                 @relation("PokemonSecondType", fields: [type2Name], references: [name])
+  type2Name               String?               @db.VarChar(16)
+  //
+  experienceGroups        ExperienceGroups      @relation(fields: [experienceGroupsId], references: [id])
+  experienceGroupsId      Int
+  //
+  generation              Generation            @relation(fields: [generationId], references: [id])
+  generationId            Int
+  //
+  evolutionGroups         EvolutionGroups?      @relation(fields: [evolutionGroupsId], references: [id])
+  evolutionGroupsId       Int?
+  //
+  pokemonNameRequests     PokemonNameRequests[]
+  caughtPokemons          CaughtPokemon[]
 }
 
 model Type {
-  name String @id @db.VarChar(16)
-
+  name                String    @id @db.VarChar(16)
+  //
   pokemonByFirstType  Pokemon[] @relation("PokemonFirstType")
   pokemonBySecondType Pokemon[] @relation("PokemonSecondType")
 }
 
 model NameRequest {
-  id            Int      @id @default(autoincrement())
-  requestedName String   @db.VarChar(255)
-  comment       String?  @db.Text
-  createdOn     DateTime @default(now()) @db.Timestamptz(6)
-  isGranted     Boolean
-  grantedOn     DateTime @default(now()) @db.Timestamptz(6)
-
+  id                  Int                   @id @default(autoincrement())
+  requestedName       String                @db.VarChar(255)
+  comment             String?               @db.Text
+  createdOn           DateTime              @default(now()) @db.Timestamptz(6)
+  isGranted           Boolean
+  grantedOn           DateTime              @default(now()) @db.Timestamptz(6)
+  //
   pokemonNameRequests PokemonNameRequests[]
 }
 
 model CaughtPokemon {
-  id       Int        @id @default(autoincrement())
-  caughtOn DateTime   @default(now()) @db.Timestamptz(6)
-  isDead   Boolean
-  diedOn   DateTime[]
-
-  pokemon   Pokemon @relation(fields: [pokemonId], references: [id])
+  id        Int        @id @default(autoincrement())
+  caughtOn  DateTime   @default(now()) @db.Timestamptz(6)
+  isDead    Boolean
+  diedOn    DateTime[]
+  //
+  pokemon   Pokemon    @relation(fields: [pokemonId], references: [id])
   pokemonId Int
 }
 
 model ExperienceGroups {
-  id          Int     @id @default(autoincrement())
-  name        String  @db.VarChar(32)
-  description String? @db.VarChar(255)
+  id          Int       @id @default(autoincrement())
+  name        String    @db.VarChar(32)
+  description String?   @db.VarChar(255)
+  //
+  pokemon     Pokemon[]
+}
 
+model Generation {
+  id      Int       @id @default(autoincrement())
+  name    String    @db.VarChar(16)
+  region  String    @db.VarChar(16)
+  //
+  pokemon Pokemon[]
+}
+
+model EvolutionGroups {
+  id      Int       @id @default(autoincrement())
+  //
   pokemon Pokemon[]
 }
 
 model PokemonNameRequests {
-  pokemon   Pokemon @relation(fields: [pokemonId], references: [id])
-  pokemonId Int
-
+  pokemon       Pokemon     @relation(fields: [pokemonId], references: [id])
+  pokemonId     Int
+  //
   nameRequest   NameRequest @relation(fields: [nameRequestId], references: [id])
   nameRequestId Int
 
