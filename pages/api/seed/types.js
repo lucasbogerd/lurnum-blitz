@@ -1,5 +1,4 @@
-const { PrismaClient } = require("@prisma/client");
-const prisma = new PrismaClient();
+import prisma from "../../../components/data/client"
 
 const types = {
   data: [
@@ -22,16 +21,22 @@ const types = {
     { name: "Dark" },
     { name: "Fairy" },
   ],
-};
+}
 
 export default async function handle(req, res) {
-  let dbResponse = { count: 0 };
+  let dbResponse = { count: 0, message: "" }
   try {
-    dbResponse = await prisma.type.createMany(types);
+    await prisma.type.deleteMany({})
+    dbResponse.count = await prisma.type.createMany(types)
   } catch (error) {
-    console.log(error);
+    if (error.code === "P2002") {
+      dbResponse.message =
+        "One or more records with already exist in DB, fully aborting..."
+    } else {
+      dbResponse.message = error
+    }
+    console.log(dbResponse.message)
   } finally {
-    await prisma.$disconnect();
-    res.json(dbResponse);
+    res.json(dbResponse)
   }
 }

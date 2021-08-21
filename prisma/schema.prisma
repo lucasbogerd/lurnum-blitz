@@ -15,11 +15,13 @@ model Pokemon {
   id                      Int                   @id @default(autoincrement())
   pokedexId               Int                   @unique
   name                    String                @db.VarChar(255)
-  legendaryClassification String                @db.VarChar(32)
+  classification          String                @db.VarChar(255)
+  legendaryClassification String?               @db.VarChar(32)
+  evolutionDetails        String?               @db.VarChar(255)
   //
-  predecessor             Pokemon?              @relation("PokemonPredecessor", fields: [predecessorPokemonId], references: [id])
+  predecessor             Pokemon?              @relation("PokemonPredecessor", fields: [predecessorPokedexId], references: [pokedexId])
   predecessorPokemon      Pokemon?              @relation("PokemonPredecessor")
-  predecessorPokemonId    Int?
+  predecessorPokedexId    Int?
   //
   type1                   Type                  @relation("PokemonFirstType", fields: [type1Name], references: [name])
   type1Name               String                @db.VarChar(16)
@@ -27,11 +29,11 @@ model Pokemon {
   type2                   Type?                 @relation("PokemonSecondType", fields: [type2Name], references: [name])
   type2Name               String?               @db.VarChar(16)
   //
-  experienceGroups        ExperienceGroups      @relation(fields: [experienceGroupsId], references: [id])
-  experienceGroupsId      Int
+  experienceGroup         ExperienceGroups      @relation(fields: [experienceGroupName], references: [name])
+  experienceGroupName     String                @db.VarChar(32)
   //
-  generation              Generation            @relation(fields: [generationId], references: [id])
-  generationId            Int
+  generation              Generation            @relation(fields: [generationName], references: [name])
+  generationName          String                @db.VarChar(16)
   //
   evolutionGroups         EvolutionGroups?      @relation(fields: [evolutionGroupsId], references: [id])
   evolutionGroupsId       Int?
@@ -69,16 +71,14 @@ model CaughtPokemon {
 }
 
 model ExperienceGroups {
-  id          Int       @id @default(autoincrement())
-  name        String    @db.VarChar(32)
+  name        String    @id @db.VarChar(32)
   description String?   @db.VarChar(255)
   //
   pokemon     Pokemon[]
 }
 
 model Generation {
-  id      Int       @id @default(autoincrement())
-  name    String    @db.VarChar(16)
+  name    String    @id @db.VarChar(16)
   region  String    @db.VarChar(16)
   //
   pokemon Pokemon[]
