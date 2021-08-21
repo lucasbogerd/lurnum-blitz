@@ -12065,7 +12065,7 @@ export default [
     "Game(s) of Origin": "Sword",
     "Region of Origin": "Galar",
     "Experience Growth": "Medium Fast",
-    "Pre-Evolution Pokemon Id": 392,
+    "Pre-Evolution Pokemon Id": 1467,
     "Evolution Details": "Level 35 At Night",
   },
   {
